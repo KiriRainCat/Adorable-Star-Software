@@ -1,0 +1,39 @@
+name: adorable_star
+description: Software implementations for Adorable Star
+publish_to: "none"
+
+version: 0.0.1
+
+environment:
+  sdk: ">=3.1.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # UI
+  cupertino_icons: ^1.0.2
+  fluent_ui: ^4.8.5
+
+  # Framework
+  get: ^4.6.6
+
+  # Storage
+  shared_preferences: ^2.2.2
+
+  # Utils
+  system_tray: ^2.0.3
+  window_manager: ^0.3.7
+  launch_at_startup: ^0.2.2
+  package_info_plus: ^4.2.0
+  windows_single_instance: ^1.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/

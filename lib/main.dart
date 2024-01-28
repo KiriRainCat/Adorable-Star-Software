@@ -1,15 +1,16 @@
 import 'dart:io';
-
-import 'package:adorable_star/i18n/i18n_service.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-
-import 'package:adorable_star/router/pages.dart';
 import 'package:system_tray/system_tray.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:windows_single_instance/windows_single_instance.dart';
+
+import 'package:adorable_star/router/pages.dart';
+import 'package:adorable_star/i18n/i18n_service.dart';
 
 /// 初始化 & 加载数据
 Future<void> init() async {
+  await WindowsSingleInstance.ensureSingleInstance([], "萌媛星"); // 确保单例
   await initWindow(); // 窗口
   await initSystemTray(); // 托盘
 }
@@ -20,9 +21,14 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with WindowListener {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -36,12 +42,36 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
     );
   }
+
+  @override
+  void onWindowClose() {
+    windowManager.hide();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    windowManager.addListener(this);
+  }
+
+  @override
+  void dispose() {
+    windowManager.removeListener(this);
+    super.dispose();
+  }
+
+  @override
+  void onWindowFocus() {
+    // Make sure to call once.
+    setState(() {});
+  }
 }
 
 /// 窗口相关初始化
 Future<void> initWindow() async {
   await windowManager.ensureInitialized();
   windowManager.setTitle("萌媛星");
+  windowManager.setPreventClose(true);
   windowManager.waitUntilReadyToShow(
     const WindowOptions(
       size: Size(1024, 720),
@@ -50,8 +80,11 @@ Future<void> initWindow() async {
       title: "萌媛星",
       titleBarStyle: TitleBarStyle.hidden,
     ),
+    () async {
+      await windowManager.show();
+      await windowManager.focus();
+    },
   );
-  windowManager.show();
 }
 
 /// 托盘图标相关初始化

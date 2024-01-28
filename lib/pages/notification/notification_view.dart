@@ -1,7 +1,7 @@
-import 'package:adorable_star/constants/constants.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
+import 'package:adorable_star/constants/constants.dart';
 import 'package:adorable_star/pages/notification/notification_controller.dart';
 
 class NotificationView extends GetView<NotificationController> {

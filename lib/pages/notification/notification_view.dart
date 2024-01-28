@@ -16,7 +16,7 @@ class NotificationView extends GetView<NotificationController> {
           color: AppColors.primaryBg,
         ),
         child: Center(
-          child: Text(controller.text.string, style: Theme.of(context).textTheme.titleLarge),
+          child: Text(controller.text.string.tr, style: Theme.of(context).textTheme.titleLarge),
         ),
       ),
     );

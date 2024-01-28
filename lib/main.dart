@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:adorable_star/i18n/i18n_service.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
@@ -29,6 +30,9 @@ class MyApp extends StatelessWidget {
       initialRoute: Pages.INITIAL,
       getPages: Pages.routes,
       home: const Text("Home"),
+      locale: I18nService.locale,
+      fallbackLocale: I18nService.fallBackLocale,
+      translations: I18nService(),
       debugShowCheckedModeBanner: false,
     );
   }

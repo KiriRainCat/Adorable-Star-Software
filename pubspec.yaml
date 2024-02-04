@@ -19,17 +19,17 @@ dependencies:
   get: ^4.6.6
 
   # Storage
+  isar: ^3.1.0+1
   shared_preferences: ^2.2.2
 
   # Utils
+  dio: ^5.4.0
   system_tray: ^2.0.3
   window_manager: ^0.3.7
   launch_at_startup: ^0.2.2
   package_info_plus: ^4.2.0
   windows_single_instance: ^1.0.1
-  isar: ^3.1.0+1
   isar_flutter_libs: ^3.1.0+1
-  dio: ^5.4.0
 
 dev_dependencies:
   flutter_test:
@@ -40,5 +40,9 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  fonts:
+    - family: SourceHanSansSC
+      fonts:
+        - asset: assets/fonts/SourceHanSansSC-Regular.otf
   assets:
     - assets/images/

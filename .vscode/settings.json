@@ -6,10 +6,12 @@
     "build": true,
     "linux": true,
     "web": true,
+    "*.isar*": true,
     //? May need the bellow folders
     "windows": true,
     "macos": true,
     "android": true,
     "ios": true
-  }
+  },
+  "cSpell.words": ["Zgggolx"]
 }

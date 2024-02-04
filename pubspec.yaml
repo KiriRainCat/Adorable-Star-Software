@@ -27,11 +27,16 @@ dependencies:
   launch_at_startup: ^0.2.2
   package_info_plus: ^4.2.0
   windows_single_instance: ^1.0.1
+  isar: ^3.1.0+1
+  isar_flutter_libs: ^3.1.0+1
+  dio: ^5.4.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+  isar_generator: ^3.1.0+1
+  build_runner: ^2.4.8
 
 flutter:
   uses-material-design: true

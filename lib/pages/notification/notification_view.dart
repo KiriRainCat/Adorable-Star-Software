@@ -1,3 +1,4 @@
+import 'package:adorable_star/services/db/model/message.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
@@ -10,13 +11,40 @@ class NotificationView extends GetView<NotificationController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(8)),
-          color: AppColors.primaryBg,
-        ),
-        child: Center(
-          child: Text(controller.text.string.tr, style: Theme.of(context).textTheme.titleLarge),
+      backgroundColor: AppColors.SecondaryBg,
+      body: Center(
+        child: Obx(
+          () => Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text("notification".tr, style: Theme.of(context).textTheme.titleLarge),
+              SizedBox(height: 16),
+              Text(DateTime.parse(controller.store.fetchedAt.value).toLocal().toString()),
+              Text(controller.store.gpa.value.toString()),
+              Expanded(
+                child: ListView(
+                  children: [
+                    for (Message msg in controller.store.messages) ...[
+                      Card(
+                        color: AppColors.primaryBg,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            children: [
+                              Text(msg.created_at.toLocal().toString()),
+                              Text(msg.assignment),
+                              Text(msg.course),
+                              Text(msg.msg),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ]
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

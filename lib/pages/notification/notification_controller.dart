@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import 'package:adorable_star/services/db/storage.dart';
+
 class NotificationController extends GetxController {
-  RxString text = "notification".obs;
+  Storage store = Get.find<Storage>();
 }

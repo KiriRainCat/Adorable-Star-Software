@@ -20,12 +20,15 @@ class LoginController extends GetxController {
   Future<void> login() async {
     if (formKey.currentState!.validate()) {
       submitting.value = true;
-      bool success = await Get.find<ApiService>().login(
-        name: textControllers[0].text,
-        password: textControllers[1].text,
-      );
-      submitting.value = false;
+      bool success = false;
+      try {
+        success = await Get.find<ApiService>().login(
+          name: textControllers[0].text,
+          password: textControllers[1].text,
+        );
+      } catch (_) {}
 
+      submitting.value = false;
       if (success) {
         SharedPreferences sp = await SharedPreferences.getInstance();
         sp.setString(Keys.NAME, textControllers[0].text);

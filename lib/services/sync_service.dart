@@ -26,17 +26,20 @@ class DataSyncService extends GetxService {
     }
 
     // 从服务器获取数据
-    Response res = await api.dio.get("/data/all");
+    late Response res;
 
-    // 处理异常
-    if (res.statusCode != 200) {
-      if (res.statusCode == 401 && (failed ?? 0) < 3) {
-        sync(failed: (failed ?? 0) + 1);
-        return;
-      }
-
+    // 异常处理
+    try {
+      res = await api.dio.get("/data/all");
+    } catch (_) {
       // 设置下一次数据同步的定时任务，请求失败的情况下 [30分钟]
       scheduledTask = Timer(Duration(minutes: 30), () => sync());
+      return;
+    }
+
+    // Token 过期处理
+    if (res.statusCode == 401 && (failed ?? 0) < 3) {
+      sync(failed: (failed ?? 0) + 1);
       return;
     }
 

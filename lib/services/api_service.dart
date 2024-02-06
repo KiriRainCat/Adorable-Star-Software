@@ -33,7 +33,8 @@ class ApiService extends GetxService {
           switch (error.response?.statusCode) {
             case 401:
               await login();
-              break;
+              handler.resolve(error.response!);
+              return;
             default:
               String err = "网络或未知异常: ${error.message}";
               if (error.response != null) {
@@ -43,8 +44,8 @@ class ApiService extends GetxService {
                   err = error.response!.data;
                 }
               }
-
               Get.snackbar("请求异常", err, maxWidth: 400, margin: EdgeInsets.only(top: 10));
+              handler.next(error);
           }
         },
       ),

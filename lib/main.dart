@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:system_tray/system_tray.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:windows_single_instance/windows_single_instance.dart';
@@ -14,9 +13,8 @@ import 'package:adorable_star/services/services.dart';
 Future<void> init() async {
   await WindowsSingleInstance.ensureSingleInstance([], "萌媛星"); // 确保单例
 
-  (await SharedPreferences.getInstance()).setString("token",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBZG9yYWJsZVN0YXJTZXJ2ZXIiLCJleHAiOjE3MDQ3OTAyMjMsIm5iZiI6MTcwNDcwMzc2MywidWlkIjoxLCJzdGF0dXMiOjkwMCwiZW1haWwiOiJzYW0uemhvdUBnZW9yZ2lhc2Nob29sLmNuIn0.0EFpZL5zYVjz_x6UVX_bCahaE9YfCxMJsQeU9jiH-lQ");
   await Get.putAsync(() => Storage().init()); // 存储服务
+  await Get.putAsync(() => ApiService().init()); // API 服务
   await Get.putAsync(() => DataSyncService().init()); // 数据同步服务
 
   await initWindow(); // 窗口
@@ -43,11 +41,11 @@ class _MyAppState extends State<MyApp> with WindowListener {
       title: '萌媛星',
       initialRoute: Pages.INITIAL,
       getPages: Pages.routes,
-      home: const Text("Home"),
       locale: I18nService.locale,
       fallbackLocale: I18nService.fallBackLocale,
       translations: I18nService(),
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(fontFamily: "SourceHanSansSC"),
     );
   }
 

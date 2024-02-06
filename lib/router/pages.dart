@@ -2,12 +2,13 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
 import 'package:adorable_star/router/bindings.dart';
+import 'package:adorable_star/pages/auth/login/login_view.dart';
 import 'package:adorable_star/pages/notification/notification_view.dart';
 
 part 'routes.dart';
 
 class Pages {
-  static const INITIAL = Routes.Notification;
+  static const INITIAL = Routes.Login;
 
   static final routes = [
     GetPage(
@@ -17,7 +18,9 @@ class Pages {
     ),
     GetPage(
       name: Routes.Login,
-      page: () => const Text("Login"),
+      page: () => LoginView(),
+      binding: LoginBinding(),
+      middlewares: [AuthMiddleware()],
     ),
     GetPage(
       name: Routes.Register,

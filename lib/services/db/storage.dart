@@ -1,9 +1,8 @@
 import 'package:get/get.dart';
 import 'package:isar/isar.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:adorable_star/utils/utils.dart';
-import 'package:adorable_star/constants/constants.dart';
+import 'package:adorable_star/services/db/model/info.dart';
 import 'package:adorable_star/services/db/model/course.dart';
 import 'package:adorable_star/services/db/model/message.dart';
 import 'package:adorable_star/services/db/model/assignment.dart';
@@ -11,23 +10,32 @@ import 'package:adorable_star/services/db/model/assignment.dart';
 class Storage extends GetxService {
   late final Isar isar;
 
-  late final SharedPreferences sp;
+  RxString fetchedAt = "None".obs;
+  RxDouble gpa = 0.0.obs;
+  RxList<Message> messages = <Message>[].obs;
 
   Future<Storage> init() async {
     isar = await Isar.open(
-      [MessageSchema, CourseSchema, AssignmentSchema],
+      [DataInfoSchema, MessageSchema, CourseSchema, AssignmentSchema],
       directory: getCwd(),
     );
 
-    sp = await SharedPreferences.getInstance();
+    fetchedAt.value = (await isar.dataInfos.get(1))?.fetchedAt ?? "None";
+    gpa.value = (await isar.dataInfos.get(1))?.gpa ?? 0;
+    messages.value = await isar.messages.filter().idGreaterThan(-1).findAll();
 
     return this;
   }
 
   Future<void> updateDbWithServerData(Map<String, dynamic> serverResponse) async {
-    // 存入 GPA 与 数据检索时间至 Shared Preferences
-    sp.setDouble(Keys.GPA, double.parse(serverResponse["data"]["gpa"]));
-    sp.setString(Keys.FETCHED_AT, serverResponse["data"]["fetched_at"]);
+    // 存入 GPA 与 数据检索时间
+    isar.writeTxn(
+      () => isar.dataInfos.put(
+        DataInfo()
+          ..fetchedAt = serverResponse["data"]["fetched_at"]
+          ..gpa = double.parse(serverResponse["data"]["gpa"]),
+      ),
+    );
 
     // 处理与存储其余科目与作业数据
     List messages = serverResponse["data"]["data"]["messages"] ?? [];
@@ -38,5 +46,19 @@ class Storage extends GetxService {
 
     List assignments = serverResponse["data"]["data"]["assignments"] ?? [];
     isar.writeTxn(() => isar.assignments.putAll(assignments.map((e) => Assignment.fromJson(e)).toList()));
+
+    await refresh();
+  }
+
+  Future<void> refresh() async {
+    DataInfo info = (await isar.dataInfos.get(1))!;
+    fetchedAt.value = info.fetchedAt;
+    gpa.value = info.gpa;
+
+    messages.value = await getMessages();
+  }
+
+  Future<List<Message>> getMessages() async {
+    return await isar.messages.filter().idGreaterThan(-1).findAll();
   }
 }

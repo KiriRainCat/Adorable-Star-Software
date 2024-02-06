@@ -33,17 +33,18 @@ class ApiService extends GetxService {
           switch (error.response?.statusCode) {
             case 401:
               await login();
-            case 404:
-              Get.snackbar("服务器异常", error.toString(), maxWidth: 200, margin: EdgeInsets.only(top: 10));
               break;
             default:
-              Get.snackbar("请求异常", error.response?.data["msg"], maxWidth: 200, margin: EdgeInsets.only(top: 10));
-          }
+              String err = "网络或未知异常: ${error.message}";
+              if (error.response != null) {
+                try {
+                  err = error.response!.data["msg"];
+                } catch (_) {
+                  err = error.response!.data;
+                }
+              }
 
-          if (error.response != null) {
-            handler.resolve(error.response!);
-          } else {
-            handler.next(error);
+              Get.snackbar("请求异常", err, maxWidth: 400, margin: EdgeInsets.only(top: 10));
           }
         },
       ),
@@ -58,7 +59,7 @@ class ApiService extends GetxService {
     name = name ?? sp.getString(Keys.NAME);
     password = password ?? password ?? sp.getString(Keys.PASSWORD);
 
-    if (password == null) {
+    if (name == null || password == null) {
       return false;
     }
 

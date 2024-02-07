@@ -15,7 +15,11 @@ class LoginController extends GetxController {
 
   // 表单逻辑相关
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  RxList<GlobalKey<FormFieldState>> fieldKeys = [GlobalKey<FormFieldState>(), GlobalKey<FormFieldState>()].obs;
   RxList<TextEditingController> textControllers = [TextEditingController(), TextEditingController()].obs;
+
+  // 页面跳转防小人
+  String coolDownEndsAt = "";
 
   Future<void> login() async {
     if (formKey.currentState!.validate()) {
@@ -39,5 +43,9 @@ class LoginController extends GetxController {
         Get.offAllNamed(Routes.Notification);
       }
     }
+  }
+
+  Future<void> toRegister() async {
+    coolDownEndsAt = await Get.toNamed(Routes.Register, arguments: {"coolDownEndsAt": coolDownEndsAt});
   }
 }

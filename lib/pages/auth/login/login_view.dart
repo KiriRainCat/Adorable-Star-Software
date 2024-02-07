@@ -23,28 +23,28 @@ class LoginView extends GetView<LoginController> {
           ),
 
           // 登录表单
-          SizedBox(width: 48),
-          Container(
+          const SizedBox(width: 48),
+          SizedBox(
             width: 320,
             child: Form(
-              autovalidateMode: AutovalidateMode.onUserInteraction,
               key: controller.formKey,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  SizedBox(height: 32),
-                  Text("login".tr, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                  SizedBox(height: 38),
+                  Text("login".tr, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 38),
                   buildUsernameField(),
-                  SizedBox(height: 14),
+                  const SizedBox(height: 14),
                   buildPasswordField(),
-                  SizedBox(height: 32),
+                  const SizedBox(height: 24),
+                  TextButton(onPressed: () => controller.toRegister(), child: Text("noAccountYet".tr)),
+                  const SizedBox(height: 24),
                   buildLoginButton(),
                 ],
               ),
             ),
           ),
-          SizedBox(width: 48),
+          const SizedBox(width: 48),
         ],
       ),
     );
@@ -60,7 +60,9 @@ class LoginView extends GetView<LoginController> {
         child: Opacity(
           opacity: controller.inputOpacities[0],
           child: TextFormField(
+            key: controller.fieldKeys[0],
             controller: controller.textControllers[0],
+            onChanged: (_) => controller.fieldKeys[0].currentState!.validate(),
             validator: (value) => value!.isEmpty ? "用户名 / 邮箱不能为空" : null,
             decoration: InputDecoration(
               filled: true,
@@ -88,8 +90,10 @@ class LoginView extends GetView<LoginController> {
         child: Opacity(
           opacity: controller.inputOpacities[1],
           child: TextFormField(
+            key: controller.fieldKeys[1],
             controller: controller.textControllers[1],
-            validator: (value) => value!.length < 6 ? "密码长度不能小于6" : null,
+            onChanged: (_) => controller.fieldKeys[1].currentState!.validate(),
+            validator: (value) => value!.length < 6 ? "${"password".tr}${"length".tr}${"cantBeLessThan".tr} 6" : null,
             obscureText: controller.obscurePassword.value,
             decoration: InputDecoration(
               filled: true,
@@ -101,7 +105,7 @@ class LoginView extends GetView<LoginController> {
                 borderSide: BorderSide(color: Colors.grey[400]!),
               ),
               suffixIcon: Container(
-                margin: EdgeInsets.only(right: 4),
+                margin: const EdgeInsets.only(right: 4),
                 child: IconButton(
                   icon: Icon(
                     controller.obscurePassword.value ? Icons.remove_red_eye_outlined : Icons.remove_red_eye_sharp,
@@ -126,11 +130,11 @@ class LoginView extends GetView<LoginController> {
             () => ElevatedButton(
               style: ButtonStyle(
                 backgroundColor: MaterialStatePropertyAll(Colors.blue[800]),
-                padding: MaterialStatePropertyAll(EdgeInsets.symmetric(vertical: 18)),
+                padding: const MaterialStatePropertyAll(EdgeInsets.symmetric(vertical: 18)),
               ),
-              onPressed: () => controller.login(),
+              onPressed: controller.submitting.value ? null : () => controller.login(),
               child: controller.submitting.value
-                  ? SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white))
+                  ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white))
                   : Text("login".tr),
             ),
           ),

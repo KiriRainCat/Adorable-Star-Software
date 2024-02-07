@@ -89,4 +89,34 @@ class ApiService extends GetxService {
 
     return false;
   }
+
+  Future<bool> sendValidationCode(String email) async {
+    Response res = await dio.post("/user/validation-code/${email}");
+
+    if (res.statusCode == 200) {
+      Get.snackbar("验证码已发送", "请查收邮件 (5分钟内有效)");
+      return true;
+    }
+
+    return false;
+  }
+
+  Future<bool> register(String email, String username, String validationCode, String password) async {
+    Response res = await dio.post(
+      "/user/register",
+      data: {
+        "email": email,
+        "validation_code": validationCode,
+        "username": username,
+        "password": password,
+      },
+    );
+
+    if (res.statusCode == 200) {
+      Get.snackbar("注册成功", "请登录");
+      return true;
+    }
+
+    return false;
+  }
 }

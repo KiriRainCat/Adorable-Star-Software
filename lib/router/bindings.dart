@@ -1,3 +1,4 @@
+import 'package:adorable_star/pages/auth/register/register_controller.dart';
 import 'package:get/get.dart';
 import 'package:flutter/src/widgets/navigator.dart';
 
@@ -18,6 +19,13 @@ class LoginBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut(() => LoginController());
+  }
+}
+
+class RegisterBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut(() => RegisterController());
   }
 }
 

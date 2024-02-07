@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
-import 'package:flutter/material.dart';
 
 import 'package:adorable_star/router/bindings.dart';
 import 'package:adorable_star/pages/auth/login/login_view.dart';
+import 'package:adorable_star/pages/auth/register/register_view.dart';
 import 'package:adorable_star/pages/notification/notification_view.dart';
 
 part 'routes.dart';
@@ -15,16 +15,20 @@ class Pages {
       name: Routes.Notification,
       page: () => const NotificationView(),
       binding: NotificationBinding(),
+      transition: Transition.fadeIn,
     ),
     GetPage(
       name: Routes.Login,
-      page: () => LoginView(),
+      page: () => const LoginView(),
       binding: LoginBinding(),
       middlewares: [AuthMiddleware()],
+      transition: Transition.fadeIn,
     ),
     GetPage(
       name: Routes.Register,
-      page: () => const Text("Register"),
+      page: () => RegisterView(),
+      binding: RegisterBinding(),
+      transition: Transition.cupertino,
     ),
   ];
 }

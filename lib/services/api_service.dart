@@ -29,6 +29,13 @@ class ApiService extends GetxService {
     // 响应错误拦截器
     dio.interceptors.add(
       InterceptorsWrapper(
+        onResponse: (response, handler) {
+          if (response.headers["New-Token"] != null) {
+            final String token = response.headers["New-Token"]![0];
+            sp.setString(Keys.TOKEN, token);
+            dio.options.headers["Token"] = token;
+          }
+        },
         onError: (error, handler) async {
           switch (error.response?.statusCode) {
             case 401:

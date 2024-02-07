@@ -35,6 +35,7 @@ class ApiService extends GetxService {
             sp.setString(Keys.TOKEN, token);
             dio.options.headers["Token"] = token;
           }
+          handler.next(response);
         },
         onError: (error, handler) async {
           switch (error.response?.statusCode) {
@@ -52,8 +53,8 @@ class ApiService extends GetxService {
                 }
               }
               Get.snackbar("请求异常", err, maxWidth: 400, margin: EdgeInsets.only(top: 10));
-              handler.next(error);
           }
+          handler.next(error);
         },
       ),
     );

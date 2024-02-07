@@ -26,7 +26,8 @@ class AuthMiddleware extends GetMiddleware {
   RouteSettings? redirect(String? route) {
     RouteSettings? dest = RouteSettings(name: Routes.Notification);
 
-    if (Get.find<ApiService>().sp.getString(Keys.TOKEN) == null) {
+    final String? token = Get.find<ApiService>().sp.getString(Keys.TOKEN);
+    if (token == null || token.isEmpty) {
       dest = null;
     }
 

@@ -84,14 +84,14 @@ class _MyAppState extends State<MyApp> with WindowListener {
                     Row(
                       children: [
                         RoundedButton(
-                          width: 16,
+                          width: 24,
                           height: 16,
                           margin: EdgeInsets.all(4),
                           onClick: () => windowManager.minimize(),
                           child: Icon(CupertinoIcons.minus, size: 16),
                         ),
                         RoundedButton(
-                          width: 10,
+                          width: 14,
                           height: 16,
                           margin: EdgeInsets.all(4),
                           onClick: () => isMaximized.value ? windowManager.unmaximize() : windowManager.maximize(),

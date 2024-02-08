@@ -1,3 +1,4 @@
+import 'package:adorable_star/components/components.dart';
 import 'package:adorable_star/services/db/model/message.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -10,9 +11,8 @@ class NotificationView extends GetView<NotificationController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.SecondaryBg,
-      body: Center(
+    return SideBarWrapper(
+      content: Center(
         child: Obx(
           () => Column(
             mainAxisSize: MainAxisSize.min,

@@ -6,14 +6,14 @@ class RoundedButton extends StatelessWidget {
     required this.width,
     required this.height,
     required this.margin,
-    required this.onClick,
+    required this.onPressed,
     required this.child,
   });
 
   final double width;
   final double height;
   final EdgeInsetsGeometry margin;
-  final void Function() onClick;
+  final void Function() onPressed;
   final Widget child;
 
   @override
@@ -24,7 +24,7 @@ class RoundedButton extends StatelessWidget {
       margin: margin,
       decoration: BoxDecoration(shape: BoxShape.circle),
       child: InkWell(
-        onTap: onClick,
+        onTap: onPressed,
         child: child,
       ),
     );

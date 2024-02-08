@@ -15,7 +15,6 @@ class Pages {
       name: Routes.Notification,
       page: () => const NotificationView(),
       binding: NotificationBinding(),
-      transition: Transition.fadeIn,
     ),
     GetPage(
       name: Routes.Login,

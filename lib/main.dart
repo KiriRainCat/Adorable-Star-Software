@@ -1,13 +1,16 @@
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:system_tray/system_tray.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:windows_single_instance/windows_single_instance.dart';
 
 import 'package:adorable_star/router/pages.dart';
+import 'package:adorable_star/constants/colors.dart';
 import 'package:adorable_star/i18n/i18n_service.dart';
 import 'package:adorable_star/services/services.dart';
+import 'package:adorable_star/components/components.dart';
 
 /// 初始化 & 加载数据
 Future<void> init() async {
@@ -35,6 +38,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> with WindowListener {
+  Rx<Size> size = Size(1024, 720).obs;
+  RxBool isMaximized = false.obs;
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -46,7 +52,89 @@ class _MyAppState extends State<MyApp> with WindowListener {
       translations: I18nService(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: "SourceHanSansSC"),
+      defaultTransition: Transition.noTransition,
     );
+  }
+
+  Widget buildAppWithWindowControls(Widget application) {
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Scaffold(
+        backgroundColor: AppColors.SecondaryBg,
+        body: Stack(
+          alignment: AlignmentDirectional.topStart,
+          children: [
+            application,
+
+            // 窗口控制
+            Obx(
+              () => Positioned(
+                width: size.value.width,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Container(
+                        height: 16,
+                        child: GestureDetector(
+                          onLongPressDown: (_) => windowManager.startDragging(),
+                        ),
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        RoundedButton(
+                          width: 16,
+                          height: 16,
+                          margin: EdgeInsets.all(4),
+                          onClick: () => windowManager.minimize(),
+                          child: Icon(CupertinoIcons.minus, size: 16),
+                        ),
+                        RoundedButton(
+                          width: 10,
+                          height: 16,
+                          margin: EdgeInsets.all(4),
+                          onClick: () => isMaximized.value ? windowManager.unmaximize() : windowManager.maximize(),
+                          child: Icon(Icons.square_outlined, size: 14),
+                        ),
+                        RoundedButton(
+                          width: 22,
+                          height: 22,
+                          margin: EdgeInsets.all(4),
+                          onClick: () => windowManager.close(),
+                          child: Icon(Icons.close, size: 20, color: Colors.red),
+                        ),
+                      ],
+                    ),
+                    SizedBox(width: 12),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  void onWindowResize() async {
+    super.onWindowResize();
+    size.value = await windowManager.getSize();
+  }
+
+  @override
+  void onWindowMaximize() async {
+    super.onWindowResize();
+    size.value = await windowManager.getSize();
+    isMaximized.value = true;
+  }
+
+  @override
+  void onWindowUnmaximize() async {
+    super.onWindowUnmaximize();
+    size.value = await windowManager.getSize();
+    isMaximized.value = false;
   }
 
   @override

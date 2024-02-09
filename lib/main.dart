@@ -51,7 +51,7 @@ class _MyAppState extends State<MyApp> with WindowListener {
       fallbackLocale: I18nService.fallBackLocale,
       translations: I18nService(),
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: "SourceHanSansSC"),
+      theme: ThemeData(fontFamily: "SourceHanSansSC", useMaterial3: false),
       defaultTransition: Transition.noTransition,
     );
   }

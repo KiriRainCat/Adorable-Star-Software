@@ -30,10 +30,10 @@ class SideBarWrapper extends StatelessWidget {
                   child: Column(
                     children: [
                       SizedBox(height: 16),
-                      Text("萌媛星"),
+                      Text("萌媛星", style: TextStyle(fontWeight: FontWeight.bold)),
+                      SizedBox(height: 8),
                       IconButton(
-                        onPressed: () =>
-                            Get.currentRoute == Routes.Notification ? null : Get.toNamed(Routes.Notification),
+                        onPressed: () => Get.toNamed(Routes.Notification),
                         icon: Icon(
                           Icons.notifications,
                           color: Get.currentRoute == Routes.Notification ? Colors.blue : Colors.black,

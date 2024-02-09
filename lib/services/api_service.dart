@@ -52,7 +52,7 @@ class ApiService extends GetxService {
                   err = error.response!.data;
                 }
               }
-              Get.snackbar("请求异常", err, maxWidth: 400, margin: EdgeInsets.only(top: 10));
+              Get.snackbar("请求异常", err, maxWidth: 300, margin: EdgeInsets.only(top: 10));
           }
           handler.next(error);
         },
@@ -94,7 +94,7 @@ class ApiService extends GetxService {
     Response res = await dio.post("/user/validation-code/${email}");
 
     if (res.statusCode == 200) {
-      Get.snackbar("验证码已发送", "请查收邮件 (5分钟内有效)");
+      Get.snackbar("验证码已发送", "请查收邮件 (5分钟内有效)", maxWidth: 300, margin: EdgeInsets.only(top: 10));
       return true;
     }
 
@@ -113,7 +113,7 @@ class ApiService extends GetxService {
     );
 
     if (res.statusCode == 200) {
-      Get.snackbar("注册成功", "请登录");
+      Get.snackbar("注册成功", "请登录", maxWidth: 300, margin: EdgeInsets.only(top: 10));
       return true;
     }
 

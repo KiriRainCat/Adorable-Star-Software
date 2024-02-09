@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
+import 'package:adorable_star/router/pages.dart';
 import 'package:adorable_star/services/services.dart';
 
 class RegisterController extends GetxController {
@@ -79,7 +80,7 @@ class RegisterController extends GetxController {
 
       submitting.value = false;
       if (success) {
-        Get.back();
+        Get.offAllNamed(Routes.Login);
       }
     }
   }
